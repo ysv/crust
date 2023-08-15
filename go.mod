@@ -3,6 +3,7 @@ module github.com/CoreumFoundation/crust
 go 1.20
 
 replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
+replace github.com/CoreumFoundation/coreum/v2 => ./../coreum
 
 require (
 	cosmossdk.io/math v1.0.1
