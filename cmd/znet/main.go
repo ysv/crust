@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,6 +15,7 @@ import (
 	"github.com/CoreumFoundation/coreum-tools/pkg/logger"
 	"github.com/CoreumFoundation/coreum-tools/pkg/must"
 	"github.com/CoreumFoundation/coreum-tools/pkg/run"
+	"github.com/CoreumFoundation/coreum/v2/pkg/config"
 	"github.com/CoreumFoundation/crust/infra"
 	"github.com/CoreumFoundation/crust/infra/apps"
 	"github.com/CoreumFoundation/crust/pkg/znet"
@@ -23,6 +25,8 @@ func main() {
 	run.Tool("znet", func(ctx context.Context) error {
 		configF := infra.NewConfigFactory()
 		cmdF := znet.NewCmdFactory(configF)
+
+		fmt.Println(config.GenesisV3Template)
 
 		rootCmd := rootCmd(ctx, configF, cmdF)
 		rootCmd.AddCommand(startCmd(ctx, configF, cmdF))

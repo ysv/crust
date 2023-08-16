@@ -402,10 +402,25 @@ func newBasicManager() module.BasicManager {
 
 // SaveGenesis saves json encoded representation of the genesis config into file.
 func (c Cored) SaveGenesis(homeDir string) error {
+	// the problem is here!
 	genDocBytes, err := c.config.NetworkConfig.EncodeGenesis()
 	if err != nil {
 		return err
 	}
+
+	//var genesisStruct map[string]interface{}
+	//err = json.Unmarshal(genDocBytes, &genesisStruct)
+	//if err != nil {
+	//	return err
+	//}
+	//genesisStruct["consensus_params"].(map[string]interface{})["block"].(map[string]interface{})["time_iota_ms"] = "1000"
+	//genDocBytes, err = json.MarshalIndent(genesisStruct, "", "  ")
+	//if err != nil {
+	//	return err
+	//}
+
+	fmt.Println("save genesis:")
+	fmt.Println(string(genDocBytes))
 
 	if err := os.MkdirAll(homeDir+"/config", 0o700); err != nil {
 		return errors.Wrap(err, "unable to make config directory")

@@ -186,6 +186,8 @@ func Test(ctx context.Context, config infra.Config, spec *infra.Spec) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("gen template for " + config.CoredVersion)
+	fmt.Println(genesisTemplate)
 
 	target := targets.NewDocker(config, spec)
 	networkConfig, err := cored.NetworkConfig(genesisTemplate)
