@@ -4,11 +4,12 @@ go 1.20
 
 replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 
-replace github.com/CoreumFoundation/coreum/v3 => github.com/CoreumFoundation/coreum/v2 v2.0.3-0.20230810074019-b41dba895971
+//replace github.com/CoreumFoundation/coreum/v2 => ../coreum
 
 require (
 	cosmossdk.io/math v1.0.1
 	github.com/CoreumFoundation/coreum-tools v0.4.1-0.20230627094203-821c6a4eebab
+	github.com/CoreumFoundation/coreum/v2 v2.0.3-0.20230810074019-b41dba895971
 	github.com/cometbft/cometbft v0.37.2
 	github.com/cosmos/cosmos-sdk v0.47.4
 	github.com/fsnotify/fsnotify v1.6.0
@@ -37,6 +38,7 @@ require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.2 // indirect
 	github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d // indirect
+	github.com/CoreumFoundation/crust/build v0.0.0-20230816130107-2ff3fc10a7ea // indirect
 	github.com/CosmWasm/wasmd v0.41.0 // indirect
 	github.com/CosmWasm/wasmvm v1.3.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
@@ -167,6 +169,7 @@ require (
 	go.uber.org/multierr v1.8.0 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
 	golang.org/x/exp v0.0.0-20230515195305-f3d0a9c9a5cc // indirect
+	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.12.0 // indirect
 	golang.org/x/oauth2 v0.10.0 // indirect
 	golang.org/x/sync v0.2.0 // indirect
