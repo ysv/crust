@@ -29,13 +29,10 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/pkg/errors"
-	"github.com/samber/lo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/CoreumFoundation/coreum-tools/pkg/must"
-	coreumconfigv2 "github.com/CoreumFoundation/coreum/v2/pkg/config"
-	coreumconstantv2 "github.com/CoreumFoundation/coreum/v2/pkg/config/constant"
 	"github.com/CoreumFoundation/coreum/v3/app"
 	"github.com/CoreumFoundation/coreum/v3/pkg/client"
 	"github.com/CoreumFoundation/coreum/v3/pkg/config"
@@ -407,41 +404,41 @@ func newBasicManager() module.BasicManager {
 func (c Cored) SaveGenesis(homeDir string) error {
 	// the problem is here!
 
-	dynamicConfigProviderV3, ok := c.config.NetworkConfig.Provider.(config.DynamicConfigProvider)
-	if !ok {
-		return errors.New("failed to cast to config.DynamicConfigProvider")
-	}
-
-	dynamicConfigProviderV2 := coreumconfigv2.DynamicConfigProvider{
-		GenesisTemplate: dynamicConfigProviderV3.GenesisTemplate,
-		ChainID:         coreumconstantv2.ChainID(dynamicConfigProviderV3.ChainID),
-		Denom:           dynamicConfigProviderV3.Denom,
-		AddressPrefix:   dynamicConfigProviderV3.AddressPrefix,
-		GenesisTime:     dynamicConfigProviderV3.GenesisTime,
-		GovConfig: coreumconfigv2.GovConfig{
-			ProposalConfig: coreumconfigv2.GovProposalConfig{
-				MinDepositAmount: dynamicConfigProviderV3.GovConfig.ProposalConfig.MinDepositAmount,
-				VotingPeriod:     dynamicConfigProviderV3.GovConfig.ProposalConfig.VotingPeriod,
-			},
-		},
-		CustomParamsConfig: coreumconfigv2.CustomParamsConfig{
-			Staking: coreumconfigv2.CustomParamsStakingConfig{
-				MinSelfDelegation: dynamicConfigProviderV3.CustomParamsConfig.Staking.MinSelfDelegation,
-			},
-		},
-		FundedAccounts: lo.Map(dynamicConfigProviderV3.FundedAccounts, func(fa config.FundedAccount, _ int) coreumconfigv2.FundedAccount {
-			return coreumconfigv2.FundedAccount{
-				Address:  fa.Address,
-				Balances: fa.Balances,
-			}
-		}),
-		GenTxs: dynamicConfigProviderV3.GenTxs,
-	}
-
-	genDocBytes, err := dynamicConfigProviderV2.EncodeGenesis()
+	genDocBytes, err := c.config.NetworkConfig.EncodeGenesis()
 	if err != nil {
 		return err
 	}
+
+	//dynamicConfigProviderV2 := coreumconfigv2.DynamicConfigProvider{
+	//	GenesisTemplate: dynamicConfigProviderV3.GenesisTemplate,
+	//	ChainID:         coreumconstantv2.ChainID(dynamicConfigProviderV3.ChainID),
+	//	Denom:           dynamicConfigProviderV3.Denom,
+	//	AddressPrefix:   dynamicConfigProviderV3.AddressPrefix,
+	//	GenesisTime:     dynamicConfigProviderV3.GenesisTime,
+	//	GovConfig: coreumconfigv2.GovConfig{
+	//		ProposalConfig: coreumconfigv2.GovProposalConfig{
+	//			MinDepositAmount: dynamicConfigProviderV3.GovConfig.ProposalConfig.MinDepositAmount,
+	//			VotingPeriod:     dynamicConfigProviderV3.GovConfig.ProposalConfig.VotingPeriod,
+	//		},
+	//	},
+	//	CustomParamsConfig: coreumconfigv2.CustomParamsConfig{
+	//		Staking: coreumconfigv2.CustomParamsStakingConfig{
+	//			MinSelfDelegation: dynamicConfigProviderV3.CustomParamsConfig.Staking.MinSelfDelegation,
+	//		},
+	//	},
+	//	FundedAccounts: lo.Map(dynamicConfigProviderV3.FundedAccounts, func(fa config.FundedAccount, _ int) coreumconfigv2.FundedAccount {
+	//		return coreumconfigv2.FundedAccount{
+	//			Address:  fa.Address,
+	//			Balances: fa.Balances,
+	//		}
+	//	}),
+	//	GenTxs: dynamicConfigProviderV3.GenTxs,
+	//}
+	//
+	//genDocBytes, err := dynamicConfigProviderV2.EncodeGenesis()
+	//if err != nil {
+	//	return err
+	//}
 
 	//var genesisStruct map[string]interface{}
 	//err = json.Unmarshal(genDocBytes, &genesisStruct)
@@ -454,8 +451,8 @@ func (c Cored) SaveGenesis(homeDir string) error {
 	//	return err
 	//}
 
-	fmt.Println("save genesis:")
-	fmt.Println(string(genDocBytes))
+	//fmt.Println("save genesis:")
+	//fmt.Println(string(genDocBytes))
 
 	if err := os.MkdirAll(homeDir+"/config", 0o700); err != nil {
 		return errors.Wrap(err, "unable to make config directory")
